@@ -1,0 +1,21 @@
+name:                hylide-projects
+version:             0.1.0.0
+-- synopsis:
+-- description:
+homepage:            https://github.com/prikhi/hylide-projects#readme
+license:             GPL-3.0
+license-file:        LICENSE
+author:              Pavan Rikhi
+maintainer:          pavan.rikhi@gmail.com
+copyright:           2017 Pavan Rikhi
+category:            Web
+build-type:          Simple
+cabal-version:       >=1.10
+extra-source-files:  README.md
+
+Library
+  hs-source-dirs:      src,
+                       book_of_shaders
+  default-language:    Haskell2010
+  build-depends:       base >= 4.7 && < 5,
+                       hylide
