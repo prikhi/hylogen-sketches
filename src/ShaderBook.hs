@@ -1,14 +1,14 @@
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE FlexibleContexts #-}
-module BookOfShaders where
+module ShaderBook where
 
 import Hylogen.WithHylide
 
-black = vec4 (0, 0, 0, 1)
+import Utils
 
 output :: Program
 output =
-    toProgram $ circle black 0.003 0.33
+    toProgram $ circle black transparent 0.003 0.33
 
 opaque :: Vec3 -> Vec4
 opaque c =
@@ -46,15 +46,6 @@ hsbRadial =
 
 
 -- CH 7
-step :: (Veccable v) => Vec v -> Vec v -> Vec v
-step edge val =
-    sel (val `gt` edge) 1.0 0.0
-
-rStep :: (Veccable v) => Vec v -> Vec v -> Vec v
-rStep =
-    flip step
-
-
 borders :: Vec4
 borders =
     let
@@ -85,15 +76,8 @@ rectangle width height =
     in
         opaque . copy $ bottom * top * left * right
 
-smoothStep :: (Veccable v) => Vec v -> Vec v -> Vec v -> Vec v
-smoothStep lo hi val =
-        let
-            clamped = clamp 0.0 1.0 ((val - lo) / (hi - lo))
-        in
-            clamped * clamped * ( 3 - 2 * clamped )
-
-circle :: Vec4 -> Vec1 -> Vec1 -> Vec4
-circle color fuzz radius =
+circle :: Vec4 -> Vec4 -> Vec1 -> Vec1 -> Vec4
+circle color fillColor fuzz radius =
     let
         d =
             len $ 0.5 - uv
@@ -103,7 +87,3 @@ circle color fuzz radius =
 
     in
         sel (d `leq` (radius + fuzz)) (vec4 (0.0, 0.0, 0.0, alpha)) transparent
-
-transparent :: Vec4
-transparent =
-    vec4 (0.0, 0.0, 0.0, 0.0)
